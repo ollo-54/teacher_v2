@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block container %}
+<main class="container mt-3">
+  <form action="/profiles/" method="POST">
+   <div class="card my-4 mx-auto">
+      <div class="card-body m-2 m-md-4">
+         <article class="row">
+            {% set teacher = profiles.teachers[id] %}
+            {% for item in teachers %}
+            {% if item.id == id %}
+            <div class="col-5"><img src="{{ item.picture }}" class="img-fluid" alt=""></div>
+            <div class="col-7">
+               <section class="teacher=info">
+                  <h1 class="h2">{{ item.name }}</h1>
+                  <p><span class="badge badge-info mr-2">
+                     {%- for goal in teacher.goals -%}
+                     <span> {{ profiles.goals[goal] }} </span>
+                     {%- endfor -%}
+                     </span><br>Рейтинг: {{ item.rating }} Ставка: {{ item.price }} / час
+                  </p>
+                  <p>{{ item.about }}</p>
+               </section>
+               <section class="available">
+                  <h4 class="mb-4 mt-5">Записаться на пробный урок</h4>
+                  {% set times = teacher.free['mon'].keys() %}
+                  <table>
+                     <tr align=center>
+                        <th><span class="btn font-weight-bold py-0">#</span></th>
+                        <th>Пн</th>
+                        <th>Вт</th>
+                        <th>Ср</th>
+                        <th>Чт</th>
+                        <th>Пт</th>
+                        <th>Сб</th>
+                        <th>Вс</th>
+                     </tr>
+                     {% for time in times %}
+                     <tr>
+                        <td align=right><span class="btn font-weight-bold py-0" name="time">{{ time }}:00</span></td>
+                        {% for day in teacher.free.keys() %}
+                        {% if teacher.free[day][time] %}
+                        <td align=center><a href="/booking/{{ id }}/{{ day }}/{{ time|int }}/" class="btn btn-sm btn-success"> Запись </a></td>
+                        {% else %}
+                        <td align=center><a href="#" class="btn btn-sm btn-secondary disabled"> Занято </a></td>
+                        {% endif %}
+                        {% endfor %}
+                     </tr>
+                     {% endfor %}
+                  </table>
+               </section>
+            </div>
+            {% endif %}
+            {% endfor %}
+         </article>
+      </div>
+   </div>
+  </form>
+</main>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block container %}
+<main class="container mt-5">
+
+   {% set study_time = ["1-2 часа", "3-5 часов", "5-7 часов", "7-10 часов"] %}
+   <div class="col-12 col-sm-10 col-lg-6 offset-lg-3 offset-sm-1">
+      <form action="/select_teacher/" class="card mb-5" method="POST">
+         <div class="card-body text-center pt-5">
+            <h1 class="h3 card-title mt-4 mb-2">Подбор преподавателя</h1>
+            <p class="px-5">Напишите, что вам нужно и&nbsp;мы&nbsp;подберем отличных&nbsp;ребят</p>
+         </div>
+         <hr>
+         <div class="card-body mx-2">
+            <div class="row">
+               <div class="col">
+                  <p>Какая цель занятий?</p>
+                  {% for item in profiles.goals %}
+                  <div class="form-check ">
+                     <input type="radio" class="form-check-input" name="goal" value="{{ profiles.goals[item] }}" id="goal" required=True>
+                     <label class="form-check-label" for="goal">
+                     {{ profiles.goals[item] }}
+                     </label> 
+                  </div>
+                  {% endfor %}
+               </div>
+               <div class="col">
+                  <p>Сколько&nbsp;времени&nbsp;есть?</p>
+                  {% for item in study_time %}
+                  <div class="form-check">
+                     <input type="radio" class="form-check-input" name="time" value="{{ item }}" id="time1" required=True>
+                     <label class="form-check-label" for="time1">
+                     {{ item }} в&nbsp;неделю
+                     </label> 
+                  </div>
+                  {% endfor %}
+               </div>
+            </div>
+         </div>
+         <hr>
+         <div class="card-body mx-3">
+            <label class="mb-1 mt-2">Вас зовут</label>
+            {{ form.user_name(class="form-control", placeholder="Имя") }}
+            <label class="mb-1 mt-2">Ваш телефон</label>
+            {{ form.user_phone(class="form-control", placeholder="(***) ***-**-**", pattern="[-0-9]+") }}
+            <input type="submit" class="btn btn-primary mt-4 mb-2" value="Найдите мне преподавателя">
+         </div>
+      </form>
+   </div>
+</main>
+{% endblock %}
